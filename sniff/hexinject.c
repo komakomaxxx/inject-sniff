@@ -14,11 +14,14 @@
 #include  <sys/types.h>
 #include  <sys/socket.h>
 
+//デバックモード解除するときは下のdefine文をコメントアウト
+//#define DEBUG 
 
+#define PACKCK
 #define HEADERSIZE 57
 #define SEQUENCESIZE 4 
 #define CRC32SIZE 2
-#define LISTSIZE 100
+#define LISTSIZE 1
 
 /*
  * CRC
@@ -385,7 +388,9 @@ char *sniff_raw(pcap_t *fp, size_t *size) {
 	char *raw = NULL;
 
 	/* Sniff the packet */
+#ifndef DEBUG
 	pcap_setdirection(fp, PCAP_D_IN);
+#endif
 	raw = (char *) pcap_next(fp, &hdr);
 
 	*size = hdr.len;
@@ -558,11 +563,13 @@ int sniff_raw_loop(pcap_t *fp)
 	    	fprintf(stderr,"CRC ERR\n");fflush(stderr);
 		continue;
 	    }
+#ifndef PACKCK
 	    if(packetCk(*crc) == 0){
 		continue;
 	    }
+#endif
 
-            fwrite(packet +HEADERSIZE , 1, size -(SEQUENCESIZE + CRC32SIZE) , stdout);
+            fwrite(packet +HEADERSIZE-1, 1, size -( HEADERSIZE-1 +SEQUENCESIZE + CRC32SIZE) , stdout);
             fflush(stdout);
 
             /* Count */
