@@ -563,7 +563,7 @@ int sniff_raw_loop(pcap_t *fp)
 	    	fprintf(stderr,"CRC ERR\n");fflush(stderr);
 		continue;
 	    }
-#ifndef PACKCK
+#ifdef PACKCK
 	    if(packetCk(*crc) == 0){
 		continue;
 	    }
