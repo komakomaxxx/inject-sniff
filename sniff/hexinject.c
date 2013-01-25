@@ -21,7 +21,7 @@
 #define HEADERSIZE 57
 #define SEQUENCESIZE 4 
 #define CRC32SIZE 2
-#define LISTSIZE 1
+#define LISTSIZE 10
 
 /*
  * CRC
