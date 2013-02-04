@@ -84,8 +84,10 @@ fflush(stdout);
 		sock = accept( serv_sock, (struct sockaddr *)&client, (socklen_t *)&len);
 printf("accept !!");
 fflush(stdout);
+//printf("[%d]\n",sock);
 
 		if(!fork()){
+			close(serv_sock);
 			if(dup2(sock,fileno(fd)) < 0){
 				perror("dup2");
 				exit(1);
@@ -97,6 +99,7 @@ fflush(stdout);
 				exit(1);
 			}
 		}
+		close(sock);
 	}
 }
 
